@@ -3,13 +3,13 @@
 /* Enable dark mode variant */
 @variant dark (.dark &);
 
-.font-dancing {
+/* .font-dancing {
   font-family: "Dancing Script", cursive;
 }
 
 .font-edu {
   font-family: "Edu NSW ACT Cursive", cursive;
-}
+} */
 
 @theme {
   --color-primary: #2563eb;

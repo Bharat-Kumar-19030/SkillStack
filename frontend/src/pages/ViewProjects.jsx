@@ -887,7 +887,7 @@ const ViewProjects = () => {
 
     return (
         <div>
-            <div className="flex-1 p-12 md:px-20 ">
+            <div className="flex-1 p-4 md:p-12 md:px-20 ">
                 <div className='dark:bg-gray-700 p-6 rounded-xl shadow-md'>
                     <div className="flex items-center justify-between mb-3">
                         <h1 className="text-gray-900 dark:text-white text-center md:text-left text-2xl md:text-3xl font-semibold">My Projects</h1>
@@ -1032,7 +1032,7 @@ const ViewProjects = () => {
 
 
                                 {/* Project Header */}
-                                <div className="w-full min-h-56 mt-30 md:mt-0 md:ml-50">
+                                <div className="w-full min-h-56 mt-34 md:mt-0 md:ml-50">
                                     <div className="mt-1">
                                         <div className="flex items-start justify-between">
                                             <h3 className="text-xl font-semibold text-gray-900 dark:text-white flex-1 text-center md:text-left">{project.displayName}</h3>
@@ -1357,7 +1357,7 @@ const ViewProjects = () => {
                                         </div>
 
                                         {/* Project Header */}
-                                        <div className="w-full min-h-56 mt-30 md:mt-0 md:ml-50">
+                                        <div className="w-full min-h-56 mt-34 md:mt-0 md:ml-50">
                                             <div className="mt-2">
                                                 <div className="flex items-start justify-between">
                                                     <h3 className="text-xl font-semibold text-gray-900 dark:text-white flex-1 text-center md:text-left">{project.name}</h3>
@@ -1676,7 +1676,7 @@ const ViewProjects = () => {
                                         </div>
 
                                         {/* Project Header */}
-                                        <div className="w-full min-h-56 mt-30 md:mt-0 md:ml-50">
+                                        <div className="w-full min-h-56 mt-34 md:mt-0 md:ml-50">
                                             <div className="mt-4">
                                                 <div className="flex items-start justify-between">
                                                     <h3 className="text-xl font-semibold text-gray-900 dark:text-white flex-1 text-center md:text-left">{project.name}</h3>
