@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
 import { motion } from "framer-motion";
@@ -140,7 +140,7 @@ const ViewProjects = () => {
 
     // Initialize all rankings based on current sort order
     const initializeRankings = async (type = 'project') => {
-        const projectsList = type === 'project' ? mergedProjects : sortedContributions;
+        const projectsList = type === 'project' ? sortedMergedProjects : sortedContributions;
         const rankings = type === 'project' ? projectRankings : contributionRankings;
 
         // Assign sequential ranks to all projects that don't have one
@@ -161,7 +161,7 @@ const ViewProjects = () => {
     // Move project up in ranking (decrease rank number, move towards 0)
     const moveProjectUp = async (project, type = 'project') => {
         const rankings = type === 'project' ? projectRankings : contributionRankings;
-        const projectsList = type === 'project' ? mergedProjects : sortedContributions;
+        const projectsList = type === 'project' ? sortedMergedProjects : sortedContributions;
         const projectId = project.htmlUrl || project.githubUrl || project._id || project.id;
 
         // Initialize rankings if this is the first interaction
@@ -192,7 +192,7 @@ const ViewProjects = () => {
     // Move project down in ranking (increase rank number, move away from 0)
     const moveProjectDown = async (project, type = 'project') => {
         const rankings = type === 'project' ? projectRankings : contributionRankings;
-        const projectsList = type === 'project' ? mergedProjects : sortedContributions;
+        const projectsList = type === 'project' ? sortedMergedProjects : sortedContributions;
         const projectId = project.htmlUrl || project.githubUrl || project._id || project.id;
 
         // Initialize rankings if this is the first interaction
@@ -810,13 +810,13 @@ const ViewProjects = () => {
         mergeProjects();
     }, [projects, githubRepos, hiddenRepos, sortBy, user]);  // Fetch data based on these
     
-    // Re-sort when rankings change without refetching all data
-    useEffect(() => {
-        if (mergedProjects.length === 0) return;
+    // Re-sort when rankings change using useMemo (prevents race conditions)
+    const sortedMergedProjects = useMemo(() => {
+        if (mergedProjects.length === 0) return [];
         
-        const sorted = [...mergedProjects].sort((a, b) => {
+        return [...mergedProjects].sort((a, b) => {
             const projectIdA = a.htmlUrl || a.githubUrl || a._id || a.id;
-            const projectIdB = b.htmlUrl || b.htmlUrl || b._id || b.id;
+            const projectIdB = b.htmlUrl || b.githubUrl || b._id || b.id;
             const rankA = projectRankings[projectIdA];
             const rankB = projectRankings[projectIdB];
 
@@ -830,9 +830,7 @@ const ViewProjects = () => {
             }
             return 0;  // For other sorts, mergedProjects already has the sorting applied
         });
-        
-        setMergedProjects(sorted);
-    }, [projectRankings, sortBy]);  // Re-sort when rankings or sort option changes
+    }, [mergedProjects, projectRankings, sortBy]);  // Recalculate when any of these change
 
     // Sort contributions with ranking as secondary sort
     useEffect(() => {
@@ -1016,7 +1014,7 @@ const ViewProjects = () => {
                     )}
 
                     <div className="grid grid-cols-1 gap-8 md:ml-10 ">
-                        {mergedProjects.map((project, index) => (
+                        {sortedMergedProjects.map((project, index) => (
 
                             <div key={project.id || index} className="relative w-full bg-gray-100 dark:bg-gray-800 shadow-md rounded-xl p-2 md:p-4 hover:shadow-lg transition flex  items-center justify-center  gap-4">
                                 {/* Thumbnail or GitHub Icon */}
