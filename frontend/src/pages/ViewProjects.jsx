@@ -184,7 +184,7 @@ const ViewProjects = () => {
         if (projectAbove) {
             const projectAboveId = projectAbove.htmlUrl || projectAbove.githubUrl || projectAbove._id || projectAbove.id;
             // Swap ranks
-            console.log("Swapping:", { projectId, rank: currentRank - 1, projectAboveId, rank: currentRank });
+            console.log("Swapping:", { projectId, newRank: currentRank - 1, projectAboveId, aboveRank: currentRank });
             swapRankings(projectId, currentRank, projectAboveId, currentRank - 1, type);
         }
     };
@@ -213,7 +213,7 @@ const ViewProjects = () => {
         if (projectBelow) {
             const projectBelowId = projectBelow.htmlUrl || projectBelow.githubUrl || projectBelow._id || projectBelow.id;
             // Swap ranks
-            console.log("Swapping:", { projectId, rank: currentRank + 1, projectBelowId, rank: currentRank });
+            console.log("Swapping:", { projectId, newRank: currentRank + 1, projectBelowId, belowRank: currentRank });
             swapRankings(projectId, currentRank, projectBelowId, currentRank + 1, type);
         }
     };
