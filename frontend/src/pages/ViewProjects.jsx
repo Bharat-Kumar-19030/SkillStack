@@ -43,7 +43,7 @@ const ViewProjects = () => {
         fetchHiddenRepos();
         fetchContributions();
         fetchRankings();
-    }, [sortBy, user]);
+    }, [user]);  // Only fetch on user change, not sortBy
     const fetchContributions = async () => {
         setFetching(true);
         if (!user) {
@@ -808,7 +808,31 @@ const ViewProjects = () => {
         };
 
         mergeProjects();
-    }, [projects, githubRepos, hiddenRepos, sortBy, user, projectRankings]);
+    }, [projects, githubRepos, hiddenRepos, sortBy, user]);  // Fetch data based on these
+    
+    // Re-sort when rankings change without refetching all data
+    useEffect(() => {
+        if (mergedProjects.length === 0) return;
+        
+        const sorted = [...mergedProjects].sort((a, b) => {
+            const projectIdA = a.htmlUrl || a.githubUrl || a._id || a.id;
+            const projectIdB = b.htmlUrl || b.htmlUrl || b._id || b.id;
+            const rankA = projectRankings[projectIdA];
+            const rankB = projectRankings[projectIdB];
+
+            if (sortBy === 'priority') {
+                if (rankA !== undefined && rankB !== undefined) {
+                    return rankA - rankB;
+                }
+                if (rankA !== undefined) return -1;
+                if (rankB !== undefined) return 1;
+                return 0;
+            }
+            return 0;  // For other sorts, mergedProjects already has the sorting applied
+        });
+        
+        setMergedProjects(sorted);
+    }, [projectRankings, sortBy]);  // Re-sort when rankings or sort option changes
 
     // Sort contributions with ranking as secondary sort
     useEffect(() => {
