@@ -641,7 +641,7 @@ export default function publicProjects({ username, t_userd, set_t_userd, contrib
 
 
                                             {/* Project Header */}
-                                            <div className=" w-full min-h-56 mt-30 md:mt-0 md:ml-50 ">
+                                            <div className=" w-full min-h-56 mt-34 md:mt-0 md:ml-50 ">
                                                 <div className="mt-1">
                                                     <div className="flex items-start justify-between">
                                                         <h3 className="text-xl font-semibold flex-1 text-center md:text-left dark:text-white">{project.displayName}</h3>
@@ -897,7 +897,7 @@ export default function publicProjects({ username, t_userd, set_t_userd, contrib
                                             </div>
 
                                             {/* Project Header */}
-                                            <div className="w-full min-h-56 mt-30 md:mt-0 md:ml-50">
+                                            <div className="w-full min-h-56 mt-34 md:mt-0 md:ml-50">
                                                 <div className="mt-2">
                                                     <div className="flex items-start justify-between">
                                                         <h3 className="text-xl font-semibold text-gray-900 dark:text-white flex-1 text-center md:text-left">{project.name}</h3>
