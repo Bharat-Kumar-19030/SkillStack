@@ -603,7 +603,7 @@ const ViewProjects = () => {
 
                 // Check if this database project's GitHub URL is hidden
                 const isHidden = hiddenRepos.some(hiddenUrl =>
-                    hiddenUrl.toLowerCase() === normalizedUrl
+                    hiddenUrl.toLowerCase().replace(/\.git$/, '') === normalizedUrl
                 );
 
                 // Skip if hidden
@@ -613,7 +613,7 @@ const ViewProjects = () => {
 
                 // Find matching GitHub repo to get live stats
                 const matchingGithubRepo = githubRepos.find(repo =>
-                    repo.htmlUrl?.toLowerCase() === normalizedUrl
+                    repo.htmlUrl?.toLowerCase().replace(/\.git$/, '') === normalizedUrl
                 );
 
                 if (matchingGithubRepo) {
@@ -701,10 +701,13 @@ const ViewProjects = () => {
             // Then add GitHub repos that aren't in database and aren't hidden
             console.log("from github", githubRepos);
             githubRepos.forEach(repo => {
-                const normalizedRepoUrl = repo.htmlUrl?.toLowerCase();
+                const normalizedRepoUrl = repo.htmlUrl?.toLowerCase().replace(/\.git$/, '');
 
                 // Skip if already in database or is hidden
-                if (!processedGithubUrls.has(normalizedRepoUrl) && !hiddenRepos.includes(repo.htmlUrl)) {
+                const isRepoHidden = hiddenRepos.some(hiddenUrl => 
+                    hiddenUrl.toLowerCase().replace(/\.git$/, '') === normalizedRepoUrl
+                );
+                if (!processedGithubUrls.has(normalizedRepoUrl) && !isRepoHidden) {
                     merged.push({
                         ...repo,
                         source: 'github',
