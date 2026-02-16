@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">
+  <circle cx="12" cy="12" r="12" fill="#EEF2FF"/> <!-- indigo-50 background -->
+  <path d="M13.5 3L4 14h6v7L21 7.5 13.5 3z" fill="#4F46E5"/> <!-- indigo-600 bolt -->
+</svg>

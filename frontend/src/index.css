@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+/* Enable dark mode variant */
+@variant dark (.dark &);
+
+.font-dancing {
+  font-family: "Dancing Script", cursive;
+}
+
+.font-edu {
+  font-family: "Edu NSW ACT Cursive", cursive;
+}
+
+@theme {
+  --color-primary: #2563eb;
+  --color-background: #f9fafb;
+  --font-sans: 'Inter', sans-serif;
+}
+
+/* Dark mode configuration - Tailwind v4 uses class-based dark mode by default */
+/* When .dark class is on html/root, dark: variants apply */
+
+/* Hide scrollbar for Chrome, Safari and Edge */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar background but show only the thumb */
+@layer utilities {
+  /* Chrome, Edge, Safari */
+  .scrollbar-thin-only::-webkit-scrollbar {
+    width: 6px;        /* adjust thickness */
+  }
+
+  .scrollbar-thin-only::-webkit-scrollbar-track {
+    background: transparent;  /* hide background */
+  }
+
+  .scrollbar-thin-only::-webkit-scrollbar-thumb {
+    background-color: rgba(175, 170, 170, 0.6); /* thumb color */
+    border-radius: 20px;
+  }
+
+  /* Firefox */
+  .scrollbar-thin-only {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(175, 170, 170, 0.6) transparent;
+  }
+}
+
+
+
+@keyframes slide-halfway {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(80%); } /* Halfway to right */
+  100% { transform: translateX(0); }
+}
+
+.animate-slide-half {
+  animation: slide-halfway 1.5s ease-in-out infinite;
+}
+@keyframes slide-fullway {
+  0% { transform: translateX(-50%); }
+  50% { transform: translateX(200%); } /* Halfway to right */
+  100% { transform: translateX(0); }
+}
+
+.animate-slide-full {
+  animation: slide-fullway 1.5s ease-in-out infinite;
+}
+
+
