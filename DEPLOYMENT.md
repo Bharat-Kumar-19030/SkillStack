@@ -1,62 +1,93 @@
 # Deployment Guide
 
-## Backend Deployment (Heroku)
+## Backend Deployment (Railway)
 
 ### Prerequisites
-- Heroku account
-- Heroku CLI installed
+- Railway account ([railway.app](https://railway.app))
+- GitHub repository (recommended)
 
 ### Steps
 
-1. **Login to Heroku**
+#### Option 1: Deploy via Railway Dashboard (Recommended)
+
+1. **Go to [Railway](https://railway.app) and login**
+
+2. **Create a New Project**
+   - Click "New Project"
+   - Select "Deploy from GitHub repo"
+   - Select your repository
+   - Railway will auto-detect your backend folder
+
+3. **Configure Root Directory (if needed)**
+   - Go to Settings
+   - Set Root Directory to `backend` if Railway doesn't auto-detect it
+
+4. **Set Environment Variables**
+   - Go to "Variables" tab
+   - Add the following variables:
+     ```
+     MONGODB_URI=your_mongodb_connection_string
+     JWT_SECRET=your_jwt_secret
+     CLIENT_URL=https://your-frontend-domain.vercel.app
+     CLOUDINARY_CLOUD_NAME=your_cloud_name
+     CLOUDINARY_API_KEY=your_api_key
+     CLOUDINARY_API_SECRET=your_api_secret
+     GOOGLE_CLIENT_ID=your_google_client_id
+     GOOGLE_CLIENT_SECRET=your_google_client_secret
+     GOOGLE_CALLBACK_URL=https://your-railway-app.railway.app/api/auth/google/callback
+     GITHUB_CLIENT_ID=your_github_client_id
+     GITHUB_CLIENT_SECRET=your_github_client_secret
+     GITHUB_CALLBACK_URL=https://your-railway-app.railway.app/api/auth/github/callback
+     GITHUB_TOKEN=your_github_token
+     SESSION_SECRET=your_session_secret
+     ENCRYPTION_KEY=your_32_char_encryption_key
+     ENCRYPTION_IV=your_16_char_encryption_iv
+     ```
+
+5. **Deploy**
+   - Railway automatically deploys on every push to your main branch
+   - Monitor deployment logs in the Railway dashboard
+
+6. **Get Your App URL**
+   - Go to Settings → Domains
+   - Railway provides a free `.railway.app` domain
+   - Copy this URL for your frontend configuration
+
+#### Option 2: Deploy via Railway CLI
+
+1. **Install Railway CLI**
    ```bash
-   heroku login
+   npm i -g @railway/cli
    ```
 
-2. **Create a new Heroku app**
+2. **Login**
+   ```bash
+   railway login
+   ```
+
+3. **Initialize Project**
    ```bash
    cd backend
-   heroku create your-app-name
+   railway init
    ```
 
-3. **Set Environment Variables**
+4. **Set Environment Variables**
    ```bash
-   heroku config:set MONGODB_URI="your_mongodb_connection_string"
-   heroku config:set JWT_SECRET="your_jwt_secret"
-   heroku config:set CLIENT_URL="https://your-frontend-domain.vercel.app"
-   heroku config:set CLOUDINARY_CLOUD_NAME="your_cloud_name"
-   heroku config:set CLOUDINARY_API_KEY="your_api_key"
-   heroku config:set CLOUDINARY_API_SECRET="your_api_secret"
-   heroku config:set GOOGLE_CLIENT_ID="your_google_client_id"
-   heroku config:set GOOGLE_CLIENT_SECRET="your_google_client_secret"
-   heroku config:set GITHUB_CLIENT_ID="your_github_client_id"
-   heroku config:set GITHUB_CLIENT_SECRET="your_github_client_secret"
-   heroku config:set SESSION_SECRET="your_session_secret"
+   railway variables set MONGODB_URI="your_mongodb_connection_string"
+   railway variables set JWT_SECRET="your_jwt_secret"
+   # ... set other variables
    ```
 
-4. **Deploy to Heroku**
+5. **Deploy**
    ```bash
-   git init
-   git add .
-   git commit -m "Initial commit"
-   heroku git:remote -a your-app-name
-   git push heroku main
-   ```
-   
-   Or if using `master` branch:
-   ```bash
-   git push heroku master
-   ```
-
-5. **Check logs**
-   ```bash
-   heroku logs --tail
+   railway up
    ```
 
 ### Important Notes
-- Heroku automatically sets the `PORT` environment variable
-- Make sure your MongoDB is accessible from Heroku (MongoDB Atlas recommended)
-- The `Procfile` tells Heroku how to start your app
+- Railway automatically sets the `PORT` environment variable
+- Railway auto-detects Node.js and runs `npm start`
+- Make sure your MongoDB is accessible from Railway (MongoDB Atlas recommended)
+- Railway offers 500 hours/month free usage
 
 ---
 
@@ -78,8 +109,8 @@
    - Output Directory: `dist`
 5. **Add Environment Variables:**
    - Click "Environment Variables"
-   - Add: `VITE_SERVER_URL` = `https://your-heroku-app.herokuapp.com`
-6. **Click "Deploy"**
+   - Add: `VITE_SERVER_URL` = `https://your-railway-app.railway.app`
+6. **Click "Deploy"
 
 ### Option 2: Deploy via Vercel CLI
 
@@ -103,7 +134,7 @@
    ```bash
    vercel env add VITE_SERVER_URL
    ```
-   Enter your Heroku backend URL: `https://your-heroku-app.herokuapp.com`
+   Enter your Railway backend URL: `https://your-railway-app.railway.app`
 
 5. **Deploy to Production**
    ```bash
@@ -125,23 +156,26 @@ CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
-GOOGLE_CALLBACK_URL=https://your-heroku-app.herokuapp.com/api/auth/google/callback
+GOOGLE_CALLBACK_URL=https://your-railway-app.railway.app/api/auth/google/callback
 GITHUB_CLIENT_ID=your_github_client_id
 GITHUB_CLIENT_SECRET=your_github_client_secret
-GITHUB_CALLBACK_URL=https://your-heroku-app.herokuapp.com/api/auth/github/callback
+GITHUB_CALLBACK_URL=https://your-railway-app.railway.app/api/auth/github/callback
+GITHUB_TOKEN=your_github_token
 SESSION_SECRET=your_session_secret
+ENCRYPTION_KEY=your_32_char_encryption_key
+ENCRYPTION_IV=your_16_char_encryption_iv
 ```
 
 ### Frontend (.env)
 ```env
-VITE_SERVER_URL=https://your-heroku-app.herokuapp.com
+VITE_SERVER_URL=https://your-railway-app.railway.app
 ```
 
 ---
 
 ## Post-Deployment Checklist
 
-- [ ] Backend is running on Heroku
+- [ ] Backend is running on Railway
 - [ ] Frontend is deployed to Vercel
 - [ ] All environment variables are set correctly
 - [ ] MongoDB connection is working
@@ -157,9 +191,9 @@ VITE_SERVER_URL=https://your-heroku-app.herokuapp.com
 ## Troubleshooting
 
 ### Backend Issues
-- **App crashed on Heroku**: Check logs with `heroku logs --tail`
+- **App crashed on Railway**: Check logs in Railway dashboard under "Deployments" → "View Logs"
 - **Database connection failed**: Verify `MONGODB_URI` is correct and MongoDB allows connections from anywhere (0.0.0.0/0)
-- **Environment variables missing**: Use `heroku config` to list all set variables
+- **Environment variables missing**: Check Railway dashboard → "Variables" tab
 
 ### Frontend Issues
 - **API calls failing**: Check `VITE_SERVER_URL` is correct
