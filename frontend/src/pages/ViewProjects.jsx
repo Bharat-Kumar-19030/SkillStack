@@ -164,29 +164,36 @@ const ViewProjects = () => {
         const projectsList = type === 'project' ? sortedMergedProjects : sortedContributions;
         const projectId = project.htmlUrl || project.githubUrl || project._id || project.id;
 
-        // Initialize rankings if this is the first interaction
-        if (rankings[projectId] === undefined) {
-            await initializeRankings(type);
-            toast.info('Initialized project rankings');
-            return; // Let user click again after initialization
-        }
-
-        const currentRank = rankings[projectId];
-
-        if (currentRank === 0) return; // Can't move up from first position
-
-        // Find the project with rank currentRank - 1 (the one above)
-        const projectAbove = projectsList.find(p => {
+        // Find current project's index in the displayed list
+        const currentIndex = projectsList.findIndex(p => {
             const pId = p.htmlUrl || p.githubUrl || p._id || p.id;
-            return rankings[pId] === currentRank - 1;
+            return pId === projectId;
         });
 
-        if (projectAbove) {
-            const projectAboveId = projectAbove.htmlUrl || projectAbove.githubUrl || projectAbove._id || projectAbove.id;
-            // Swap ranks
-            console.log("Swapping:", { projectId, newRank: currentRank - 1, projectAboveId, aboveRank: currentRank });
-            swapRankings(projectId, currentRank, projectAboveId, currentRank - 1, type);
+        if (currentIndex === -1) return; // Project not found
+        if (currentIndex === 0) return; // Already at the top
+
+        // Get the project directly above in the display list
+        const projectAbove = projectsList[currentIndex - 1];
+        const projectAboveId = projectAbove.htmlUrl || projectAbove.githubUrl || projectAbove._id || projectAbove.id;
+
+        // Get or initialize rankings
+        let currentRank = rankings[projectId];
+        let aboveRank = rankings[projectAboveId];
+
+        // Initialize ranks if they don't exist (based on current display positions)
+        if (currentRank === undefined) {
+            currentRank = currentIndex;
+            await updateProjectRanking(projectId, currentRank, type);
         }
+        if (aboveRank === undefined) {
+            aboveRank = currentIndex - 1;
+            await updateProjectRanking(projectAboveId, aboveRank, type);
+        }
+
+        // Swap ranks
+        console.log("Swapping:", { projectId, currentRank, newRank: aboveRank, projectAboveId, aboveRank, newAboveRank: currentRank });
+        await swapRankings(projectId, currentRank, projectAboveId, aboveRank, type);
     };
 
     // Move project down in ranking (increase rank number, move away from 0)
@@ -195,27 +202,36 @@ const ViewProjects = () => {
         const projectsList = type === 'project' ? sortedMergedProjects : sortedContributions;
         const projectId = project.htmlUrl || project.githubUrl || project._id || project.id;
 
-        // Initialize rankings if this is the first interaction
-        if (rankings[projectId] === undefined) {
-            await initializeRankings(type);
-            toast.info('Initialized project rankings');
-            return; // Let user click again after initialization
-        }
-
-        const currentRank = rankings[projectId];
-
-        // Find the project with rank currentRank + 1 (the one below)
-        const projectBelow = projectsList.find(p => {
+        // Find current project's index in the displayed list
+        const currentIndex = projectsList.findIndex(p => {
             const pId = p.htmlUrl || p.githubUrl || p._id || p.id;
-            return rankings[pId] === currentRank + 1;
+            return pId === projectId;
         });
 
-        if (projectBelow) {
-            const projectBelowId = projectBelow.htmlUrl || projectBelow.githubUrl || projectBelow._id || projectBelow.id;
-            // Swap ranks
-            console.log("Swapping:", { projectId, newRank: currentRank + 1, projectBelowId, belowRank: currentRank });
-            swapRankings(projectId, currentRank, projectBelowId, currentRank + 1, type);
+        if (currentIndex === -1) return; // Project not found
+        if (currentIndex === projectsList.length - 1) return; // Already at the bottom
+
+        // Get the project directly below in the display list
+        const projectBelow = projectsList[currentIndex + 1];
+        const projectBelowId = projectBelow.htmlUrl || projectBelow.githubUrl || projectBelow._id || projectBelow.id;
+
+        // Get or initialize rankings
+        let currentRank = rankings[projectId];
+        let belowRank = rankings[projectBelowId];
+
+        // Initialize ranks if they don't exist (based on current display positions)
+        if (currentRank === undefined) {
+            currentRank = currentIndex;
+            await updateProjectRanking(projectId, currentRank, type);
         }
+        if (belowRank === undefined) {
+            belowRank = currentIndex + 1;
+            await updateProjectRanking(projectBelowId, belowRank, type);
+        }
+
+        // Swap ranks
+        console.log("Swapping:", { projectId, currentRank, newRank: belowRank, projectBelowId, belowRank, newBelowRank: currentRank });
+        await swapRankings(projectId, currentRank, projectBelowId, belowRank, type);
     };
     // FETCH PROJECTS FROM BACKEND
     //
