@@ -46,7 +46,7 @@ router.post("/signup", async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: isProd,
-      sameSite: "lax",
+      sameSite: isProd ? "none" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -104,7 +104,7 @@ router.post("/login", async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: isProd,
-      sameSite: "lax",
+      sameSite: isProd ? "none" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -125,7 +125,7 @@ router.post("/login", async (req, res) => {
 
 /**
  * Helper: set token cookie and redirect.
- * - cookie is HTTP-only, secure in production, sameSite lax.
+ * - cookie is HTTP-only, secure in production, sameSite none for cross-origin in prod.
  */
 function setTokenAndRedirect(res, token, redirectTo = "/") {
   const isProd = process.env.NODE_ENV === "production";
@@ -133,7 +133,7 @@ function setTokenAndRedirect(res, token, redirectTo = "/") {
   res.cookie("token", token, {
     httpOnly: true,
     secure: isProd,
-    sameSite: "lax",
+    sameSite: isProd ? "none" : "lax",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
