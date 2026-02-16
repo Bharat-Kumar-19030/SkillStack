@@ -13,7 +13,7 @@
     "@tailwindcss/vite": "^4.1.17",
     "framer-motion": "^12.23.24",
     "gsap": "^3.13.0",
-    "lucide-react": "^0.263.1",
+    "lucide-react": "^0.460.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-github-calendar": "^5.0.0",
