@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
 import { motion } from "framer-motion";
@@ -9,6 +9,7 @@ import eyeicon from "../assets/eye.svg";
 import liveicon from "../assets/live.svg";
 const ViewProjects = () => {
     const { user } = useAuth();
+    const hasFetchedGithubRepos = useRef(false); // Track if we've successfully fetched GitHub repos
     const [editingProject, setEditingProject] = useState(null); // Track project being edited
     const [hiddenRepos, setHiddenRepos] = useState([]); // Store hidden repo URLs
     const [loadingRepos, setLoadingRepos] = useState(false);
@@ -38,12 +39,20 @@ const ViewProjects = () => {
         thumbnail: null,
     });
     useEffect(() => {
+        console.log("🚀 Initial useEffect triggered - user:", user?._id);
         if (!user) return;
+        hasFetchedGithubRepos.current = false; // Reset on user change
         fetchProjects();
         fetchHiddenRepos();
         fetchContributions();
         fetchRankings();
     }, [user]);  // Only fetch on user change, not sortBy
+    
+    // Monitor state changes
+    useEffect(() => {
+        console.log("📊 STATE CHANGE - projects:", projects.length, "githubRepos:", githubRepos.length, "hiddenRepos:", hiddenRepos.length);
+    }, [projects, githubRepos, hiddenRepos]);
+    
     const fetchContributions = async () => {
         setFetching(true);
         if (!user) {
@@ -96,7 +105,7 @@ const ViewProjects = () => {
     const updateProjectRanking = async (projectId, newRank, type = 'project') => {
         try {
             const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:5000";
-            console.log("Updating ranking:", { projectId, newRank, type });
+            console.log("🔄 Updating ranking:", { projectId, newRank, type });
             const response = await fetch(`${SERVER_URL}/api/users/updateRanking`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -106,7 +115,7 @@ const ViewProjects = () => {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log("Updated rankings:", data);
+                console.log("✅ Updated rankings - will trigger useMemo");
                 if (type === 'project') {
                     setProjectRankings(prev => ({ ...prev, ...data.projectRankings }));
                 } else {
@@ -236,6 +245,7 @@ const ViewProjects = () => {
     // FETCH PROJECTS FROM BACKEND
     //
     const fetchProjects = async () => {
+        console.log("📡 fetchProjects called");
         if (!user) return;
         try {
             const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:5000";
@@ -249,13 +259,14 @@ const ViewProjects = () => {
 
             if (projectsResponse.ok) {
                 const projectsData = await projectsResponse.json();
+                console.log("✅ Setting database projects:", projectsData.length);
                 setProjects(projectsData);
-                console.log("Fetched database projects:", projectsData);
             } else {
-                console.error("Failed to fetch projects");
+                console.error("❌ Failed to fetch projects");
             }
 
             // Fetch GitHub repositories
+            console.log("🔍 Checking GitHub fetch conditions - fetchPublic:", user?.fetchPublicRepos, "fetchPrivate:", user?.fetchPrivateRepos);
             if (user?.fetchPublicRepos || user?.fetchPrivateRepos) {
                 setLoadingRepos(true);
                 const githubResponse = await fetch(`${SERVER_URL}/api/github/userRepos`, {
@@ -264,11 +275,13 @@ const ViewProjects = () => {
 
                 if (githubResponse.ok) {
                     const githubData = await githubResponse.json();
+                    console.log("✅ Setting GitHub repos:", githubData.repos?.length || 0);
                     setGithubRepos(githubData.repos || []);
-                    console.log("Fetched GitHub repos:", githubData);
+                    hasFetchedGithubRepos.current = true; // Mark as fetched
                 } else {
                     const error = await githubResponse.json();
-                    console.error("Failed to fetch GitHub repos:", error.message);
+                    console.error("❌ Failed to fetch GitHub repos:", error.message);
+                    hasFetchedGithubRepos.current = true; // Mark as attempted even if failed
                     if (error.message.includes('GitHub profile link')) {
                         // Don't show error if user hasn't set up GitHub link yet
                         console.log('GitHub profile not configured');
@@ -277,6 +290,9 @@ const ViewProjects = () => {
                     }
                 }
                 setLoadingRepos(false);
+            } else {
+                console.warn("⚠️ Skipping GitHub fetch - conditions not met");
+                hasFetchedGithubRepos.current = true; // Mark as "not needed"
             }
 
         } catch (error) {
@@ -603,6 +619,15 @@ const ViewProjects = () => {
     useEffect(() => {
         const mergeProjects = async () => {
             console.log("🔁 Starting mergeProjects - DB:", projects.length, "GitHub:", githubRepos.length, "Hidden:", hiddenRepos.length);
+            console.log("   sortBy:", sortBy, "user.fetchPublicRepos:", user?.fetchPublicRepos, "user.fetchPrivateRepos:", user?.fetchPrivateRepos);
+            console.log("   hasFetchedGithubRepos:", hasFetchedGithubRepos.current);
+            
+            // SAFETY CHECK: If user should have GitHub repos but we haven't fetched them yet, wait
+            if ((user?.fetchPublicRepos || user?.fetchPrivateRepos) && !hasFetchedGithubRepos.current) {
+                console.log("⚠️ SKIPPING merge - waiting for initial GitHub repos fetch");
+                return;
+            }
+            
             if (projects.length === 0 && githubRepos.length === 0) {
                 setMergedProjects([]);
                 console.log("⚠️ Both projects and githubRepos are empty");
