@@ -149,7 +149,7 @@ const ProfileShowcase = () => {
         </div>
 
         {/* Feature Grid Below Carousel */}
-        <motion.div
+        {/* <motion.div
           initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.3 }}
@@ -171,7 +171,7 @@ const ProfileShowcase = () => {
               <p className="text-gray-600 dark:text-gray-400 text-sm">{feature.desc}</p>
             </motion.div>
           ))}
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   );
