@@ -602,8 +602,10 @@ const ViewProjects = () => {
     // Merge GitHub repos with database projects
     useEffect(() => {
         const mergeProjects = async () => {
+            console.log("🔁 Starting mergeProjects - DB:", projects.length, "GitHub:", githubRepos.length, "Hidden:", hiddenRepos.length);
             if (projects.length === 0 && githubRepos.length === 0) {
                 setMergedProjects([]);
+                console.log("⚠️ Both projects and githubRepos are empty");
                 return;
             }
 
@@ -715,7 +717,11 @@ const ViewProjects = () => {
             }
 
             // Then add GitHub repos that aren't in database and aren't hidden
-            console.log("from github", githubRepos);
+            console.log("🔍 Processing GitHub repos:", githubRepos.length, "items");
+            console.log("📋 Already processed GitHub URLs:", processedGithubUrls.size);
+            console.log("🚫 Hidden repos:", hiddenRepos.length);
+            
+            let addedFromGithub = 0;
             githubRepos.forEach(repo => {
                 const normalizedRepoUrl = repo.htmlUrl?.toLowerCase().replace(/\.git$/, '');
 
@@ -738,8 +744,11 @@ const ViewProjects = () => {
                         demoVideoUrl: null,
                         homepage: repo.homepage, // Keep GitHub's homepage
                     });
+                    addedFromGithub++;
                 }
             });
+            console.log("➕ Added from GitHub:", addedFromGithub, "items");
+            console.log("📦 Total merged:", merged.length, "items");
 
             // Apply sorting to merged projects
             const sortedMerged = [...merged].sort((a, b) => {
@@ -824,21 +833,29 @@ const ViewProjects = () => {
             });
 
             setMergedProjects(sortedMerged);
+            console.log("✅ Merged projects set:", sortedMerged.length, "items");
         };
 
         mergeProjects();
-    }, [projects, githubRepos, hiddenRepos, sortBy, user]);  // Fetch data based on these
+    }, [projects, githubRepos, hiddenRepos, sortBy, user]);  // Don't include rankings here - let useMemo handle sorting
     
     // Re-sort when rankings change using useMemo (prevents race conditions)
     const sortedMergedProjects = useMemo(() => {
-        if (mergedProjects.length === 0) return [];
+        console.log("🔄 useMemo running - mergedProjects:", mergedProjects.length, "projectRankings:", Object.keys(projectRankings).length);
+        if (mergedProjects.length === 0) {
+            console.log("⚠️ mergedProjects is empty, returning []");
+            return [];
+        }
         
-        return [...mergedProjects].sort((a, b) => {
+        // For priority sort, apply ranking-based sorting
+        // For other sorts, the merge already sorted them, so just apply rankings as secondary
+        const sorted = [...mergedProjects].sort((a, b) => {
             const projectIdA = a.htmlUrl || a.githubUrl || a._id || a.id;
             const projectIdB = b.htmlUrl || b.githubUrl || b._id || b.id;
             const rankA = projectRankings[projectIdA];
             const rankB = projectRankings[projectIdB];
 
+            // When sorting by priority, use ONLY rankings
             if (sortBy === 'priority') {
                 if (rankA !== undefined && rankB !== undefined) {
                     return rankA - rankB;
@@ -847,8 +864,12 @@ const ViewProjects = () => {
                 if (rankB !== undefined) return 1;
                 return 0;
             }
-            return 0;  // For other sorts, mergedProjects already has the sorting applied
+            
+            // For other sort modes, keep the merge order (rankings already applied as secondary)
+            return 0;
         });
+        console.log("✅ sortedMergedProjects:", sorted.length, "items");
+        return sorted;
     }, [mergedProjects, projectRankings, sortBy]);  // Recalculate when any of these change
 
     // Sort contributions with ranking as secondary sort
