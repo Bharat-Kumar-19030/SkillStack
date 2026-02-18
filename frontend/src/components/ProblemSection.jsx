@@ -3,7 +3,7 @@ import { AlertCircle, Target, Rocket } from "lucide-react";
 
 const ProblemSection = () => {
   return (
-    <section id="problem" className="relative px-6 md:px-20 py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 overflow-hidden">
+    <section id="problem" className="relative px-6 md:px-20 py-20 pt-10 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 overflow-hidden">
       {/* Background elements */}
       <div className="absolute top-1/2 left-0 w-64 h-64 bg-indigo-200 dark:bg-indigo-900/20 rounded-full filter blur-3xl opacity-30"></div>
       <div className="absolute bottom-0 right-0 w-64 h-64 bg-purple-200 dark:bg-purple-900/20 rounded-full filter blur-3xl opacity-30"></div>
@@ -17,10 +17,10 @@ const ProblemSection = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-100 dark:bg-red-900/30 rounded-full mb-4">
+          {/* <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-100 dark:bg-red-900/30 rounded-full mb-4">
             <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400" />
             <span className="text-sm font-semibold text-red-600 dark:text-red-400">The Problem</span>
-          </div>
+          </div> */}
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             What Drives Us
           </h2>
@@ -39,32 +39,32 @@ const ProblemSection = () => {
             viewport={{ once: true }}
             className="group"
           >
-            <div className="h-full bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all border-l-4 border-red-500">
+            <div className="h-full bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all border-l-4 border-green-500">
               <div className="flex items-start gap-4 mb-4">
-                <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <AlertCircle className="w-6 h-6 text-red-600 dark:text-red-400" />
+                <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <AlertCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                     For Students
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400">
-                    <span className="font-semibold text-red-600 dark:text-red-400">Amazing projects remain unseen</span> — 
+                    <span className="font-semibold text-green-600 dark:text-green-400">Amazing projects remain unseen</span> — 
                     Students build incredible projects during college, but most of them never reach potential employers or the wider community.
                   </p>
                 </div>
               </div>
               <ul className="space-y-3 ml-16">
                 <li className="flex items-start gap-2 text-gray-600 dark:text-gray-400">
-                  <span className="text-red-500 mt-1">•</span>
+                  <span className="text-green-500 mt-1">•</span>
                   <span>No centralized platform to showcase skills</span>
                 </li>
                 <li className="flex items-start gap-2 text-gray-600 dark:text-gray-400">
-                  <span className="text-red-500 mt-1">•</span>
+                  <span className="text-green-500 mt-1">•</span>
                   <span>Projects scattered across platforms</span>
                 </li>
                 <li className="flex items-start gap-2 text-gray-600 dark:text-gray-400">
-                  <span className="text-red-500 mt-1">•</span>
+                  <span className="text-green-500 mt-1">•</span>
                   <span>Difficult to share work effectively</span>
                 </li>
               </ul>
@@ -141,12 +141,12 @@ const ProblemSection = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
                 {[
-                  { icon: "🎯", text: "One centralized portfolio" },
-                  { icon: "🔗", text: "Single shareable link" },
-                  { icon: "📊", text: "Real verified metrics" }
+                  { icon: '<svg width="20" height="20" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="8"/><circle cx="50" cy="50" r="30" stroke="currentColor" stroke-width="8"/><circle cx="50" cy="50" r="15" fill="currentColor"/></svg>', text: "One centralized portfolio" },
+                  { icon: '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd"/></svg>', text: "Single shareable link" },
+                  { icon: '<svg width="20" height="20" viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><rect x="15" y="45" width="15" height="40" rx="2"/><rect x="42.5" y="30" width="15" height="55" rx="2"/><rect x="70" y="15" width="15" height="70" rx="2"/></svg>', text: "Real verified metrics" }
                 ].map((item, index) => (
                   <div key={index} className="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-lg p-4">
-                    <span className="text-3xl">{item.icon}</span>
+                    <span className="text-3xl" dangerouslySetInnerHTML={{ __html: item.icon }}></span>
                     <span className="font-semibold">{item.text}</span>
                   </div>
                 ))}

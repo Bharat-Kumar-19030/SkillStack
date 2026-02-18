@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import { Menu, X } from "lucide-react";
 import { useAuth } from '../context/AuthContext.jsx';
 import { useTheme } from '../context/ThemeContext.jsx';
@@ -10,6 +10,7 @@ import liveicon from "../assets/live.svg";
 import { motion } from "framer-motion";
 export default function publicProjects({ username, t_userd, set_t_userd, contributions, setContributions }) {
     const { isDark } = useTheme();
+    const hasFetchedGithubRepos = useRef(false); // Track if we've fetched GitHub repos
     const [user, setUser] = useState(null)
     const [showenter, setShowenter] = useState(false)
     const [fetching, setFetching] = useState(false)
@@ -101,13 +102,21 @@ export default function publicProjects({ username, t_userd, set_t_userd, contrib
         });
     };
 
+    // Fetch data only when user changes, not on sortBy change
     useEffect(() => {
+        console.log("🚀 [Public] Initial fetch - user:", user?.username);
         if (user) {
+            hasFetchedGithubRepos.current = false; // Reset on user change
             fetchProjects();
             fetchHiddenRepos();
             fetchContributions();
         }
-    }, [sortBy, user]);
+    }, [user]);  // Removed sortBy - sorting handled by merge effect
+    
+    // Monitor state changes
+    useEffect(() => {
+        console.log("📊 [Public] STATE - projects:", projects.length, "githubRepos:", githubRepos.length, "hiddenRepos:", hiddenRepos.length);
+    }, [projects, githubRepos, hiddenRepos]);
 
     const fetchHiddenRepos = async () => {
         if (!user) {
@@ -165,12 +174,13 @@ export default function publicProjects({ username, t_userd, set_t_userd, contrib
         }
     }
     const fetchProjects = async () => {
+        console.log("📡 [Public] fetchProjects called");
         if (!user) {
-            console.log("User not found, skipping fetchProjects");
+            console.log("⚠️ [Public] User not found, skipping fetchProjects");
             return;
         }
 
-        console.log("Fetching projects for user:", user.username || user.name);
+        console.log("🔍 [Public] Fetching projects for user:", user.username || user.name);
 
         try {
             const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:5000";
@@ -185,10 +195,10 @@ export default function publicProjects({ username, t_userd, set_t_userd, contrib
 
             if (projectsResponse.ok) {
                 const projectsData = await projectsResponse.json();
+                console.log("✅ [Public] Setting database projects:", projectsData.length, "projects");
                 setProjects(projectsData);
-                console.log("Fetched database projects:", projectsData.length, "projects");
             } else {
-                console.error("Failed to fetch projects:", projectsResponse.status);
+                console.error("❌ [Public] Failed to fetch projects:", projectsResponse.status);
             }
 
             // Always fetch GitHub repositories - backend will handle permissions
@@ -203,13 +213,15 @@ export default function publicProjects({ username, t_userd, set_t_userd, contrib
 
             if (githubResponse.ok) {
                 const githubData = await githubResponse.json();
+                console.log("✅ [Public] Setting GitHub repos:", githubData.repos?.length || 0);
                 setGithubRepos(githubData.repos || []);
-                console.log("Fetched GitHub repos:", githubData.repos?.length || 0, "repos");
+                hasFetchedGithubRepos.current = true; // Mark as fetched
             } else {
                 const error = await githubResponse.json();
-                console.error("Failed to fetch GitHub repos:", error.message);
+                console.error("❌ [Public] Failed to fetch GitHub repos:", error.message);
                 // Silently fail - user might not have GitHub integration enabled
                 setGithubRepos([]);
+                hasFetchedGithubRepos.current = true; // Mark as attempted
             }
             setLoadingRepos(false);
 
@@ -267,14 +279,24 @@ export default function publicProjects({ username, t_userd, set_t_userd, contrib
 
     // Merge GitHub repos with database projects
     useEffect(() => {
+        console.log("🔁 [Public] Starting merge - DB:", projects.length, "GitHub:", githubRepos.length, "Hidden:", hiddenRepos.length);
+        console.log("   hasFetchedGithubRepos:", hasFetchedGithubRepos.current, "user:", !!user);
+        
+        // SAFETY CHECK: Wait for initial GitHub fetch to complete
+        if (user && !hasFetchedGithubRepos.current) {
+            console.log("⚠️ [Public] Waiting for GitHub fetch to complete");
+            return;
+        }
+        
         if (projects.length === 0 && githubRepos.length === 0) {
+            console.log("⚠️ [Public] Both sources empty");
             setMergedProjects([]);
             return;
         }
 
         // If we're supposed to sort by priority but user data isn't loaded yet, wait
         if (sortBy === 'priority' && !user) {
-            console.log('Waiting for user data before sorting by priority...');
+            console.log('⚠️ [Public] Waiting for user data before sorting by priority...');
             return;
         }
 
@@ -356,7 +378,11 @@ export default function publicProjects({ username, t_userd, set_t_userd, contrib
         });
 
         // Then add GitHub repos that aren't in database and aren't hidden
-        console.log("from github", githubRepos);
+        console.log("🔍 [Public] Processing GitHub repos:", githubRepos.length, "items");
+        console.log("📋 [Public] Already processed:", processedGithubUrls.size);
+        console.log("🚫 [Public] Hidden repos:", hiddenRepos.length);
+        
+        let addedFromGithub = 0;
         githubRepos.forEach(repo => {
             const normalizedRepoUrl = repo.htmlUrl?.toLowerCase();
 
@@ -376,8 +402,11 @@ export default function publicProjects({ username, t_userd, set_t_userd, contrib
                     demoVideoUrl: null,
                     homepage: repo.homepage, // Keep GitHub's homepage
                 });
+                addedFromGithub++;
             }
         });
+        console.log("➕ [Public] Added from GitHub:", addedFromGithub, "items");
+        console.log("📦 [Public] Total merged:", merged.length, "items");
 
         // Apply sorting to merged projects
         const sortedMerged = [...merged].sort((a, b) => {
@@ -468,16 +497,9 @@ export default function publicProjects({ username, t_userd, set_t_userd, contrib
             return primarySort;
         });
 
-        // console.log('Merged projects sorted. Total projects:', sortedMerged.length);
-        // console.log('User rankings available:', user?.projectRankings ? Object.keys(user.projectRankings).length : 0);
-        // console.log('Sort mode:', sortBy);
-        // console.log('First 3 projects after sort:', sortedMerged.slice(0, 3).map(p => ({
-        //     name: p.displayName || p.name,
-        //     url: p.htmlUrl || p.githubUrl,
-        //     rank: user?.projectRankings?.[p.htmlUrl || p.githubUrl]
-        // })));
+        console.log("✅ [Public] Merged projects set:", sortedMerged.length, "items");
         setMergedProjects(sortedMerged);
-    }, [projects, githubRepos, hiddenRepos, sortBy, user]);
+    }, [projects, githubRepos, hiddenRepos, sortBy, user]);  // Keep user dependency for rankings
 
     // Re-sort contributions when sortBy or user changes (without refetching)
     useEffect(() => {

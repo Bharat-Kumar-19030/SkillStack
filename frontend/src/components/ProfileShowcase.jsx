@@ -41,7 +41,7 @@ const ProfileShowcase = () => {
   };
 
   return (
-    <section className="relative px-6 md:px-20 py-20 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-indigo-950 dark:to-purple-950 overflow-hidden">
+    <section className="relative px-6 md:px-20  py-20 pt-10 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-indigo-950 dark:to-purple-950 overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-indigo-300 dark:bg-indigo-900 rounded-full mix-blend-multiply dark:mix-blend-soft-light filter blur-xl opacity-30 animate-pulse"></div>
@@ -57,12 +57,12 @@ const ProfileShowcase = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-full mb-4">
-            <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+          {/* <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-full mb-4">
             <span className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">Live Preview</span>
-          </div>
+          </div> */}
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            See Your Profile Come to Life
+            See Your Profile Come to Life <span><Sparkles className="w-15 h-15 inline text-indigo-600 dark:text-indigo-400" /></span>
+            
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             Transform your developer journey into a stunning visual portfolio that recruiters love

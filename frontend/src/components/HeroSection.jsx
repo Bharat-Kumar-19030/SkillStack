@@ -3,6 +3,7 @@ import TextType from './TextType';
 import RotatingText from './RotatingText';
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, Github, Code2, Sparkles } from "lucide-react";
+import headimg from '../assets/hero-profile-showcase.png';
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ const HeroSection = () => {
         </motion.div>
       </div>
 
-      <div className="relative z-10 px-6 md:px-20 py-20 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="relative z-10 px-6 md:px-20 py-20 pt-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Left Content */}
         <motion.div
           initial={{ x: -60, opacity: 0 }}
@@ -69,7 +70,7 @@ const HeroSection = () => {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.6 }}
-            className="text-lg md:text-xl text-white/90 mb-8 max-w-xl mx-auto lg:mx-0"
+            className=" text-white/90 mb-8 max-w-xl mx-auto lg:mx-0"
           >
             Create stunning developer profiles, showcase your projects with demo videos, 
             integrate GitHub & LeetCode stats, and land your dream job with a single shareable link.
@@ -152,7 +153,7 @@ const HeroSection = () => {
               className="relative bg-white/10 backdrop-blur-lg rounded-3xl p-4 border border-white/20 shadow-2xl"
             >
               <img
-                src="https://cdn.dribbble.com/userupload/9207747/file/original-21b682aefddbbf6e1db13b0f5e4bdbd9.png"
+                src={headimg}
                 alt="Developer Portfolio Showcase"
                 className="w-full rounded-2xl shadow-2xl"
               />
@@ -179,7 +180,7 @@ const HeroSection = () => {
                 </div>
                 <div>
                   <p className="text-xs text-gray-500 dark:text-gray-400">GitHub Repos</p>
-                  <p className="font-bold text-gray-900 dark:text-white">50+ Projects</p>
+                  <p className="font-bold text-gray-900 dark:text-white">20+ Projects</p>
                 </div>
               </div>
             </motion.div>

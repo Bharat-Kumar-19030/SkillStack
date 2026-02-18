@@ -18,7 +18,7 @@ const features = [
   },
   {
     icon: <Code2 className="w-8 h-8" />,
-    title: "LeetCode Stats",
+    title: "Practice Platform Stats",
     desc: "Showcase your problem-solving skills with integrated LeetCode rankings and progress.",
     gradient: "from-orange-500 to-red-500",
     delay: 0.3
@@ -37,18 +37,18 @@ const features = [
     gradient: "from-indigo-500 to-purple-500",
     delay: 0.5
   },
-  {
-    icon: <Zap className="w-8 h-8" />,
-    title: "AI Resume Builder",
-    desc: "Generate professional resumes powered by AI based on your projects and skills.",
-    gradient: "from-yellow-500 to-orange-500",
-    delay: 0.6
-  }
+  // {
+  //   icon: <Zap className="w-8 h-8" />,
+  //   title: "AI Resume Builder",
+  //   desc: "Generate professional resumes powered by AI based on your projects and skills.",
+  //   gradient: "from-yellow-500 to-orange-500",
+  //   delay: 0.6
+  // }
 ];
 
 const FeaturesSection = () => {
   return (
-    <section id="features" className="relative px-6 md:px-20 py-20 bg-white dark:bg-gray-900 overflow-hidden">
+    <section id="features" className="relative px-6 md:px-20 py-20 pt-10 bg-white dark:bg-gray-900 overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-bl from-indigo-100/50 to-transparent dark:from-indigo-950/30 rounded-full blur-3xl"></div>
       
@@ -61,9 +61,9 @@ const FeaturesSection = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <div className="inline-block px-4 py-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-full mb-4">
+          {/* <div className="inline-block px-4 py-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-full mb-4">
             <span className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">✨ Features</span>
-          </div>
+          </div> */}
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Everything You Need to Stand Out
           </h2>
