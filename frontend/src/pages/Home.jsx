@@ -17,7 +17,7 @@ function Home() {
         <HeroSection />
         {/* <StatsSection /> */}
         <ProblemSection />
-        <ProfileShowcase />
+        {/* <ProfileShowcase /> */}
         <FeaturesSection />
       </div>
     </>
