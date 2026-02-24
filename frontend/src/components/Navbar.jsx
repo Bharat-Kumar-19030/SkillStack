@@ -45,7 +45,7 @@ const Navbar = () => {
       className="flex justify-between items-center px-4 md:px-10 py-4 bg-gray-50/50 dark:bg-gray-700/50 backdrop-blur-md sticky top-0 z-50"
     >
       {showenter && <Enter toop={1} setShowenter={setShowenter} />}
-      <button onClick={() => navigate("/")} className=" hover:cursor-pointer text-2xl font-bold font-cursive text-indigo-600 dark:text-indigo-400">VibeSpace</button>
+      <button onClick={() => navigate("/")} className=" hover:cursor-pointer text-2xl font-bold font-cursive text-indigo-600 dark:text-indigo-400">SkillStacks</button>
       <div className="space-x-6 flex items-center">
         {/* <span className="hover:text-indigo-600  text-gray-500 hover:underline cursor-pointer">Problem</span>
         <span className="hover:text-indigo-600  text-gray-500 hover:underline cursor-pointer">Features</span> */}
