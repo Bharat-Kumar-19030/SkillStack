@@ -116,7 +116,7 @@ const Navbar = () => {
                   className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 shadow-lg rounded-lg py-2 "
                 >
                   <button
-                    onClick={() => navigate(user?.username?.trim()!==""?'/profile/'+user.username:'/profile/')}
+                    onClick={() => navigate(user?.username?.trim()!=="" &&user?.username!=undefined?'/profile/'+user.username:'/profile/')}
                     className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white"
                   >
                     Profile

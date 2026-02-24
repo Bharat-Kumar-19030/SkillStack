@@ -28,3 +28,9 @@ Thumbs.db
 
 # Uploads
 uploads/
+
+#batch files
+*.bat
+
+#psd1 files
+*.ps1
