@@ -30,7 +30,7 @@ const LanguageStatsCard = ({ languageStats }) => {
   };
 
   return (
-    <div className="dark:bg-gray-600 bg-white border-gray-100 rounded-2xl p-3">
+    <div className="dark:bg-gray-700 bg-white border-gray-100 rounded-2xl p-3">
       <div className="flex items-center justify-between mb-2">
         <h2 className=" font-bold text-gray-600 dark:text-white flex items-center">
           <svg className="w-6 h-6 mr-3 text-teal-400" fill="currentColor" viewBox="0 0 20 20">

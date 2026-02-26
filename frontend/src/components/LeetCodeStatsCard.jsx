@@ -30,7 +30,7 @@ const LeetCodeStatsCard = ({ problemStats }) => {
   const [acceptanceOffset, setAcceptanceOffset] = React.useState(circumference - (acceptancePercentage / 100) * circumference);
 
   return (
-    <div className="bg-white dark:bg-gray-600  rounded-2xl p-2 pr-3">
+    <div className="bg-white dark:bg-gray-700  rounded-2xl p-2 pr-3">
       
 
       <div className="flex flex-col md:flex-row justify-between gap-1 items-center">

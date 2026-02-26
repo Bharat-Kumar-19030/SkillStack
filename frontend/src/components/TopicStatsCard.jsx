@@ -47,7 +47,7 @@ const TopicStatsCard = ({ topicStats }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-600 rounded-2xl p-3 border border-gray-100 dark:border-gray-700 max-w-full overflow-hidden">
+    <div className="bg-white dark:bg-gray-700 rounded-2xl p-3 border border-gray-100 dark:border-gray-700 max-w-full overflow-hidden">
 
 
       {/* Tabs */}

@@ -137,7 +137,7 @@ export default function PublicProfile() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-800 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-800 flex items-center justify-center">
         <SkeletalPublic/>
       </div>
     );
@@ -160,7 +160,7 @@ export default function PublicProfile() {
       {/* Profile Header */}
         <div className=" flex items-center md:items-start flex-col md:flex-row gap-3 md:gap-1  justify-around md:mx-20 mb-8">
           <div className='flex flex-col gap-2 items-center justify-center'>
-          <div className=" bg-white dark:bg-gray-600 rounded-xl p-4 flex flex-col md:flex-row items-center  gap-8">
+          <div className=" bg-white dark:bg-gray-700 rounded-xl p-4 flex flex-col md:flex-row items-center  gap-8">
             {/* Profile Image */}
             <div className="flex flex-col ">
               <div className='flex  gap-2 '>
@@ -175,7 +175,7 @@ export default function PublicProfile() {
 
                   {user.Bio && (
 
-                    <p className="text-xs text-gray-700 mt-1 bg-gray-100 dark:bg-gray-500 rounded-md p-0.5 dark:text-gray-300 md:max-w-[150px] block break-words">{user.Bio.length > 48 ? user.Bio.substring(0, 48) + "..." : user.Bio}</p>
+                    <p className="text-xs text-gray-700 mt-1 bg-gray-100 dark:bg-gray-700 rounded-md p-0.5 dark:text-gray-300 md:max-w-[150px] block break-words">{user.Bio.length > 48 ? user.Bio.substring(0, 48) + "..." : user.Bio}</p>
                   )}
                 </div>
 
@@ -323,7 +323,7 @@ export default function PublicProfile() {
               </div>
             </div>
           </div>
-          {user.websites&& user.websites[0].trim()!==''&&<div className=" bg-white w-full p-2 dark:bg-gray-600 rounded-xl flex flex-col">
+          {user.websites&& user.websites[0].trim()!==''&&<div className=" bg-white w-full p-2 dark:bg-gray-700 rounded-xl flex flex-col">
             <div className='flex items-center justify-center w-full'>
               <div className="text-gray-600 font-bold dark:text-white mb-2 flex items-center gap-1">
               My Creations
@@ -357,7 +357,7 @@ export default function PublicProfile() {
         {/* GitHub Stats Section */}
         <div className="flex flex-col md:flex-row gap-6 mb-8 w-full justify-between items-start ">
           <div className='flex flex-col  items-center justify-between w-full md:w-1/2 h-80'>
-            <div className="bg-white dark:bg-gray-600 rounded-xl shadow p-6  w-full">
+            <div className="bg-white dark:bg-gray-700 rounded-xl shadow p-6  w-full">
               <div className="flex items-center gap-3">
                 <div className="p-3 bg-purple-100 rounded-lg">
                   <svg className="w-6 h-6 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
@@ -381,7 +381,7 @@ export default function PublicProfile() {
                 </div>
               </div>
             </div>
-            <div className="bg-white  dark:bg-gray-600 rounded-xl shadow p-6  w-full">
+            <div className="bg-white  dark:bg-gray-700 rounded-xl shadow p-6  w-full">
               <div className="flex items-center gap-3">
                 <div className="p-3 bg-indigo-100 rounded-lg">
                   <svg className="w-6 h-6 text-indigo-600" fill="currentColor" viewBox="0 0 24 24">
@@ -405,7 +405,7 @@ export default function PublicProfile() {
               </div>
             </div>
 
-            <div className="bg-white  dark:bg-gray-600  rounded-xl shadow p-6  w-full">
+            <div className="bg-white  dark:bg-gray-700  rounded-xl shadow p-6  w-full">
               <div className="flex items-center gap-3 ">
                 <div className="p-3 bg-green-100  rounded-lg">
                   <svg className="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 24 24">
@@ -428,7 +428,7 @@ export default function PublicProfile() {
 
           </div>
           {githubUsername && (
-            <div className="bg-white dark:bg-gray-600 p-6 pt-4 shadow h-80 rounded-xl overflow-y-auto w-full md:w-1/2 scrollbar-thin-only overflow-x-visible">
+            <div className="bg-white dark:bg-gray-700 p-6 pt-4 shadow h-80 rounded-xl overflow-y-auto w-full md:w-1/2 scrollbar-thin-only overflow-x-visible">
               <GitHubTimeline setLastcommit={setLastcommit} githubUsername={githubUsername} />
               {/* {console.log("last commit",lastcommit)} */}
             </div>
@@ -471,7 +471,7 @@ export default function PublicProfile() {
 
         {/* Languages Section - Display aggregated languages from child */}
         {t_userdetails && t_userdetails.languages && t_userdetails.languages.length > 0 && (
-          <div className="bg-white dark:bg-gray-600  rounded-2xl shadow-lg p-8 mb-8">
+          <div className="bg-white dark:bg-gray-700  rounded-2xl shadow-lg p-8 mb-8">
             <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">Languages Used</h2>
             <div className="space-y-4">
               {(() => {

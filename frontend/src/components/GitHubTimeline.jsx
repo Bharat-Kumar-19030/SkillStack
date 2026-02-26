@@ -388,7 +388,7 @@ export default function GitHubTimeline({ githubUsername ,setLastcommit}) {
   }
 
   return (
-    <div className="space-y-4 dark:bg-gray-600">
+    <div className="space-y-4 dark:bg-gray-700">
       <h3 className="text-lg font-semibold text-gray-800  dark:text-white  ">Recent Activity</h3>
       
       <div className="space-y-4">
@@ -406,7 +406,7 @@ export default function GitHubTimeline({ githubUsername ,setLastcommit}) {
 
             {/* Event details */}
             <div className="flex-1 pb-1">
-              <div className="bg-white dark:bg-gray-600 rounded-lg border border-gray-200 dark:text-white p-2 hover:shadow-md transition-shadow">
+              <div className="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:text-white p-2 hover:shadow-md transition-shadow">
                 {getEventDescription(event)}
                 <div className="mt-2 text-xs text-gray-500 dark:text-gray-300">
                   {getTimeAgo(event.created_at)}

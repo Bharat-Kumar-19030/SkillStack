@@ -15,7 +15,7 @@ const ContestInfoCard = ({ contestStats }) => {
   } = contestStats;
 
   return (
-    <div className="bg-white dark:bg-gray-600  rounded-2xl p-3  border border-gray-100 dark:border-gray-700">
+    <div className="bg-white dark:bg-gray-700  rounded-2xl p-3  border border-gray-100 dark:border-gray-700">
       <div className="flex items-center justify-between">
         <h2 className=" font-bold text-gray-700 dark:text-white flex items-center">
           <svg className="w-8 h-8 mr-2 text-yellow-600 dark:text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
