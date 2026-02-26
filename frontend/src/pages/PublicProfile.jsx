@@ -137,7 +137,7 @@ export default function PublicProfile() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-800 flex items-center justify-center">
         <SkeletalPublic/>
       </div>
     );
