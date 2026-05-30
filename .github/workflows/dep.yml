@@ -5,11 +5,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      # - uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 20
+      # - run: |
+      #     cd backend
+      #     npm install
+      #     echo 'npm installed'
+      #     npm run build
+      - uses: docker/login-action@v3
         with:
-          node-version: 20
-      - run: |
-          cd backend
-          npm install
-          echo 'npm installed'
-          npm run build
+          username: ${{ secrets.USER }}
+          password: ${{ secrets.PASS }}
+      - run: docker build -t ${{ secrets.USER }}/newimage:latest ./backend
+      - run: docker push ${{ secrets.USER }}/newimage:latest
+        
+
+        
