@@ -1,0 +1,9 @@
+on:
+  push
+jobs:
+  runs-on:ubuntu-latest
+  steps:
+    - run: cd backend
+    - run: npm install
+    - run: echo 'npm installed'
+    - run: npm build
