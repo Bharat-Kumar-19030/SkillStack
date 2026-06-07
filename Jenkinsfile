@@ -22,7 +22,7 @@ pipeline {
         }
         stage('Check Docker'){
             steps{
-                sh 'docker --version'
+                bat 'docker --version'
             }
         }
         stage('push'){
@@ -34,7 +34,7 @@ pipeline {
                         passwordVariable:'PASS'
                     )
                 ]){
-                    sh ''' 
+                    bat ''' 
                     docker login -u $USER -p $PASS
                     docker build -t $USER/vibespace:latest .
                     docker push $USER/vibespace:latest
