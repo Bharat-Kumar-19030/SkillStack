@@ -20,6 +20,11 @@ pipeline {
                 echo 'Deployment Complete'
             }
         }
+        stage('Check Docker'){
+            steps{
+                sh 'docker --version'
+            }
+        }
         stage('push'){
             steps{
                 withCredentials([
@@ -33,7 +38,7 @@ pipeline {
                     docker login -u $USER -p $PASS
                     docker build -t $USER/vibespace:latest .
                     docker push $USER/vibespace:latest
-                    
+
                     '''
                 }
             }
