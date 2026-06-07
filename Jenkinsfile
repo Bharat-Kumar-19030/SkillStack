@@ -35,9 +35,9 @@ pipeline {
                     )
                 ]){
                     bat ''' 
-                    docker login -u %USER% -p %PASS%
-                    docker build --progress=plain -t test .
-                    docker build -t %USER%/vibespace:latest .
+                    echo %PASS% | docker login -u %USER% --password-stdin
+                    docker build --progress=plain -t test ./backend
+                    docker build -t %USER%/vibespace:latest ./backend
                     docker push %USER%/vibespace:latest
 
                     '''
